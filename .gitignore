@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# 竞赛材料 / 原始客户端二进制 —— 不纳入仓库
+B题/
+Jammers-simulator-full/
