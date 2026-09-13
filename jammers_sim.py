@@ -253,7 +253,10 @@ def generate_practice(seed: bytes, problem: int = 3) -> Scenario:
 
     directional: Set[int] = set()
     if problem == 4:
-        dcount = cs.uintN("directional-count", n_ch)   # 0..n_ch-1
+        # uintN(n_ch) 只给到 0x1404ef3ba 那条 lea 之前，取的是 0..n_ch-1；
+        # 紧接着 0x1404ef3ba  lea 0x1(%rax),%rsi  把它加了 1 才存回 dcount，
+        # 即 dcount ∈ 1..n_ch（U{1..N}），不是 U{0..N-1}。这里之前漏看了那条 lea。
+        dcount = cs.uintN("directional-count", n_ch) + 1   # 1..n_ch
         order = channels[:]
         cs.shuffle("directional-channels", order)
         directional = set(order[:dcount])
